@@ -1,58 +1,55 @@
 import { nanoid } from 'nanoid';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { ButtonSbm, FormContainer, InputStyle, LabelCont } from './Form.styled';
 
-export class Form extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
+export const Form = ({ addName }) => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-
     const newObject = {
       id: nanoid(),
-      name: this.state.name,
-      number: this.state.number,
+      name: name,
+      number: number,
     };
-
-    this.props.addName(newObject);
-
-    this.setState({ name: '', number: '' });
+    addName(newObject);
+    setName('');
+    setNumber('');
   };
 
-  handleChange = e => {
+  const handleChange = e => {
     const { name, value } = e.target;
-    this.setState({ [name]: value });
+    if (name === 'name') {
+      setName(value);
+    } else if (name === 'number') {
+      setNumber(value);
+    }
   };
 
-  render() {
-    return (
-      <FormContainer onSubmit={this.handleSubmit}>
-        <LabelCont>
-          Name: &nbsp;
-          <InputStyle
-            onChange={this.handleChange}
-            value={this.state.name}
-            type="text"
-            name="name"
-            required
-          />
-        </LabelCont>
-        <LabelCont>
-          Number: &nbsp;
-          <InputStyle
-            type="tel"
-            name="number"
-            onChange={this.handleChange}
-            value={this.state.number}
-            required
-          />
-        </LabelCont>
-
-        <ButtonSbm>Add contact</ButtonSbm>
-      </FormContainer>
-    );
-  }
-}
+  return (
+    <FormContainer onSubmit={handleSubmit}>
+      <LabelCont>
+        Name: &nbsp;
+        <InputStyle
+          onChange={handleChange}
+          value={name}
+          type="text"
+          name="name"
+          required
+        />
+      </LabelCont>
+      <LabelCont>
+        Number: &nbsp;
+        <InputStyle
+          type="tel"
+          name="number"
+          onChange={handleChange}
+          value={number}
+          required
+        />
+      </LabelCont>
+      <ButtonSbm>Add contact</ButtonSbm>
+    </FormContainer>
+  );
+};
