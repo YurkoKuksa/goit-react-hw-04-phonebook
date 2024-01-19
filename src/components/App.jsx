@@ -29,7 +29,7 @@ export const App = () => {
 
   const handleAddName = newObject => {
     const isNameExists = contacts.some(
-      contact => contact.name === newObject.name
+      contact => contact.name.toLowerCase() === newObject.name.toLowerCase()
     );
 
     if (isNameExists) {
